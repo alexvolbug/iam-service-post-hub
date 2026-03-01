@@ -5,6 +5,7 @@ import com.post_hub.iam_service.model.constants.ApiErrorMessage;
 import com.post_hub.iam_service.model.dto.post.PostDTO;
 import com.post_hub.iam_service.model.dto.post.PostSearchDTO;
 import com.post_hub.iam_service.model.entity.Post;
+import com.post_hub.iam_service.model.entity.User;
 import com.post_hub.iam_service.model.exception.DataExistException;
 import com.post_hub.iam_service.model.exception.NotFoundException;
 import com.post_hub.iam_service.model.request.post.NewPostRequest;
@@ -13,6 +14,7 @@ import com.post_hub.iam_service.model.request.post.UpdatePostRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.model.response.PaginationResponse;
 import com.post_hub.iam_service.repository.PostRepository;
+import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.repository.criteria.PostSearchCriteria;
 import com.post_hub.iam_service.service.PostService;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +30,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final PostMapper postMapper;
 
     @Override
@@ -41,12 +44,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public IamResponse<PostDTO> createPost(NewPostRequest newPostRequest) {
-        if (postRepository.existsByTitle(newPostRequest.getTitle())) {
-            throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXISTS.getMessage(newPostRequest.getTitle()));
+    public IamResponse<PostDTO> createPost(@NotNull Integer userId, NewPostRequest request) {
+        if (postRepository.existsByTitle(request.getTitle())) {
+            throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXISTS.getMessage(request.getTitle()));
         }
 
-        Post post = postMapper.createPost(newPostRequest);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(userId)));
+
+        Post post = postMapper.createPost(request, user);
         Post savedPost = postRepository.save(post);
         PostDTO savedPostDTO = postMapper.toPostDTO(savedPost);
 
