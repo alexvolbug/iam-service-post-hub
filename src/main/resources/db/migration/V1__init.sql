@@ -19,17 +19,17 @@ CREATE TABLE posts (
                        updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                        deleted BOOLEAN NOT NULL DEFAULT false,
                        likes INTEGER NOT NULL  DEFAULT 0,
-                        created_by VARCHAR(50),
+                       created_by VARCHAR(50),
                        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                        UNIQUE (title)
 );
-CREATE TABLE roles
-(
-                        id               SERIAL PRIMARY KEY,
-                        name             VARCHAR(50) NOT NULL,
-                        user_system_role VARCHAR(64) NOT NULL,
-                        active           BOOLEAN     NOT NULL DEFAULT true,
-                        created_by       VARCHAR(50) NOT NULL
+
+CREATE TABLE roles (
+                       id SERIAL PRIMARY KEY,
+                       name VARCHAR(50) NOT NULL,
+                       user_system_role VARCHAR(64) NOT NULL,
+                       active BOOLEAN NOT NULL DEFAULT true,
+                       created_by VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE users_roles (
@@ -47,6 +47,7 @@ CREATE TABLE refresh_token (
                                user_id BIGINT NOT NULL,
                                CONSTRAINT FK_refresh_tokens_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
                                CONSTRAINT refresh_token_UNIQUE UNIQUE (user_id, id)
+
 );
 
 INSERT INTO users (username, password, email, created, updated, registration_status, last_login, deleted) VALUES
