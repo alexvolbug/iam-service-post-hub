@@ -25,8 +25,10 @@ public class JwtTokenProvider {
     private final SecretKey secretKey;
     private final Long jwtValidityInMilliseconds;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secret,
-                            @Value("${jwt.expiration:3600000}") long jwtValidityInMilliseconds) {
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") long jwtValidityInMilliseconds
+    ) {
         this.secretKey = getKey(secret);
         this.jwtValidityInMilliseconds = jwtValidityInMilliseconds;
     }

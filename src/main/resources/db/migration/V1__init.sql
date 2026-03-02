@@ -42,9 +42,9 @@ CREATE TABLE users_roles (
 
 
 INSERT INTO users (username, password, email, created, updated, registration_status, last_login, deleted) VALUES
-                   ('super_admin', '$2a$10$bGizKQywz7hAjYyWTH6V1OqXxs8DS8Xt1LQ3Di7mfPz9qbv1JnTey', 'superadmin@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-                   ('admin', '$2a$10$8mq47mFYPWMkwI45Qyov8uqNc71C5tErCaPKPxBPbyboiKfFt7Yai', 'admin@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-                   ('user', '$2a$10$oitU93M5D580b.LCy5408ekiRY68OVW.st40al5fag5/lYd3JqgOC', 'user@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
+                   ('super_admin', '$2a$10$M8Azw7TIF1NiF1bslluRcOyY7HDLKfgOW8Y9QXSwmWbmSksk.Pqoa', 'superadmin@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+                   ('admin', '$2a$10$PP4taPc.TrsjVBxSLFJtuOZuxJhD8llSJwDSWIQde5rXt5JiIsnRa', 'admin@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+                   ('user', '$2a$10$rzrS01mzP/4p3s43Rqh70O0JCghYnYZO0P2ejjWltQqeNT6JtUeFK', 'user@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
 
 INSERT INTO posts (user_id, title, content, created, updated, deleted, likes) VALUES
                      (1, 'First Post', 'This is content of the first post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 6),
