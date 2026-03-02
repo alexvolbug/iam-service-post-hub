@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS.getMessage(request.getUsername()));
+            throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXISTS.getMessage(request.getUsername()));
         }
 
         Role userRole = roleRepository.findByName(IamServiceUserRole.USER.getRole())

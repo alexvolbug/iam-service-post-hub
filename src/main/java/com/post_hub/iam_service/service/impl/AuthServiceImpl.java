@@ -78,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public IamResponse<UserProfileDTO> registerUser(@NotNull RegistrationUserRequest request) {
         userRepository.findByUsername(request.getUsername()).ifPresent(existingUser -> {
-            throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS.getMessage(request.getUsername()));
+            throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXISTS.getMessage(request.getUsername()));
         });
 
         userRepository.findByEmail(request.getEmail()).ifPresent(existingUser -> {
