@@ -23,12 +23,40 @@ CREATE TABLE posts (
                        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                        UNIQUE (title)
 );
+CREATE TABLE roles
+(
+                        id               SERIAL PRIMARY KEY,
+                        name             VARCHAR(50) NOT NULL,
+                        user_system_role VARCHAR(64) NOT NULL,
+                        active           BOOLEAN     NOT NULL DEFAULT true,
+                        created_by       VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE users_roles (
+                             user_id BIGINT NOT NULL,
+                             role_id INT NOT NULL,
+                             PRIMARY KEY (user_id, role_id),
+                             FOREIGN KEY (user_id) REFERENCES users (id),
+                             FOREIGN KEY (role_id) REFERENCES roles (id)
+);
+
 
 INSERT INTO users (username, password, email, created, updated, registration_status, last_login, deleted) VALUES
-                                                                                                              ('first_user', '$2a$10$bGizKQywz7hAjYyWTH6V1OqXxs8DS8Xt1LQ3Di7mfPz9qbv1JnTey', 'first_user@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-                                                                                                              ('second_user', '$2a$10$8mq47mFYPWMkwI45Qyov8uqNc71C5tErCaPKPxBPbyboiKfFt7Yai', 'second_user@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-                                                                                                              ('third_user', '$2a$10$oitU93M5D580b.LCy5408ekiRY68OVW.st40al5fag5/lYd3JqgOC', 'third_user@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
+                   ('super_admin', '$2a$10$bGizKQywz7hAjYyWTH6V1OqXxs8DS8Xt1LQ3Di7mfPz9qbv1JnTey', 'superadmin@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+                   ('admin', '$2a$10$8mq47mFYPWMkwI45Qyov8uqNc71C5tErCaPKPxBPbyboiKfFt7Yai', 'admin@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+                   ('user', '$2a$10$oitU93M5D580b.LCy5408ekiRY68OVW.st40al5fag5/lYd3JqgOC', 'user@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
 
 INSERT INTO posts (user_id, title, content, created, updated, deleted, likes) VALUES
-                                                                                  (1, 'First Post', 'This is content of the first post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 6),
-                                                                                  (2, 'Second Post', 'This is content of the second post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 3);
+                     (1, 'First Post', 'This is content of the first post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 6),
+                     (2, 'Second Post', 'This is content of the second post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 3);
+
+
+INSERT INTO roles (name, user_system_role, created_by) VALUES
+                   ('SUPER_ADMIN', 'SUPER_ADMIN', 'SUPER_ADMIN'),
+                   ('ADMIN', 'ADMIN', 'SUPER_ADMIN'),
+                   ('USER', 'USER', 'SUPER_ADMIN');
+
+INSERT INTO users_roles (user_id, role_id) VALUES
+                                               (1, 1),
+                                               (2, 2),
+                                               (3, 3);
