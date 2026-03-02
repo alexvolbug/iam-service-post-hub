@@ -23,72 +23,72 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("${end.point.posts}")
+@RequestMapping("${end.points.posts}")
 public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("${end.point.id}")
+    @GetMapping("${end.points.id}")
     public ResponseEntity<IamResponse<PostDTO>> getPostById(
             @PathVariable(name = "id") Integer postId) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-    IamResponse<PostDTO> response = postService.getById(postId);
-    return ResponseEntity.ok(response);
+        IamResponse<PostDTO> response = postService.getById(postId);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("${end.point.create}")
+    @PostMapping("${end.points.create}")
     public ResponseEntity<IamResponse<PostDTO>> createPost(
-            @RequestBody @Valid NewPostRequest request)
-    {
-       log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
-    //TODO: replace 1
-       int userId = 1;
+            @RequestBody @Valid NewPostRequest request) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-       IamResponse<PostDTO> response = postService.createPost(userId, request);
-       return ResponseEntity.ok(response);
+        // TODO: replace 1 with the real user_id
+        int userId = 1;
+
+        IamResponse<PostDTO> response = postService.createPost(userId, request);
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping("${end.point.id}")
+    @PutMapping("${end.points.id}")
     public ResponseEntity<IamResponse<PostDTO>> updatePostById(
-          @PathVariable(name = "id") Integer postId,
-          @RequestBody @Valid UpdatePostRequest request){
+            @PathVariable(name = "id") Integer postId,
+            @RequestBody @Valid UpdatePostRequest request) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
         IamResponse<PostDTO> updatedPost = postService.updatePost(postId, request);
         return ResponseEntity.ok(updatedPost);
     }
 
-    @DeleteMapping("${end.point.id}")
+    @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> softDeletePostById(
             @PathVariable(name = "id") Integer postId) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
         postService.softDeletePost(postId);
         return ResponseEntity.ok().build();
-
     }
 
-    @GetMapping("${end.point.all}")
+    @GetMapping("${end.points.all}")
     public ResponseEntity<IamResponse<PaginationResponse<PostSearchDTO>>> getAllPosts(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
-        IamResponse<PaginationResponse<PostSearchDTO>> response = postService.findelAllPosts(pageable);
+        IamResponse<PaginationResponse<PostSearchDTO>> response = postService.findAllPosts(pageable);
         return ResponseEntity.ok(response);
-
     }
-    @PostMapping("${end.point.search}")
+
+    @PostMapping("${end.points.search}")
     public ResponseEntity<IamResponse<PaginationResponse<PostSearchDTO>>> searchPosts(
             @RequestBody @Valid PostSearchRequest request,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "10") int limit){
-       log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
-       Pageable pageable = PageRequest.of(page, limit);
-       IamResponse<PaginationResponse<PostSearchDTO>> response = postService.searchPosts(request, pageable);
-       return ResponseEntity.ok(response);
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        Pageable pageable = PageRequest.of(page, limit);
+        IamResponse<PaginationResponse<PostSearchDTO>> response = postService.searchPosts(request, pageable);
+        return ResponseEntity.ok(response);
     }
 
 }

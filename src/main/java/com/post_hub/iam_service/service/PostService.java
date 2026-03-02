@@ -12,15 +12,16 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
-    IamResponse<PostDTO> getById(@NotNull Integer id);
+    IamResponse<PostDTO> getById(@NotNull Integer userId);
 
     IamResponse<PostDTO> createPost(@NotNull Integer userId, NewPostRequest request);
 
-    IamResponse<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest);
+    IamResponse<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest request);
 
-    void softDeletePost(@NotNull Integer postId);
+    void softDeletePost(Integer postId);
 
-    IamResponse<PaginationResponse<PostSearchDTO>> findelAllPosts(Pageable pageable);
+    IamResponse<PaginationResponse<PostSearchDTO>> findAllPosts(Pageable pageable);
 
-    IamResponse<PaginationResponse<PostSearchDTO>> searchPosts(@NotNull PostSearchRequest request, Pageable pageable);
+    IamResponse<PaginationResponse<PostSearchDTO>> searchPosts(PostSearchRequest request, Pageable pageable);
+
 }

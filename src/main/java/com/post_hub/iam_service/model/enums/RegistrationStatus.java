@@ -1,4 +1,4 @@
-package com.post_hub.iam_service.enums;
+package com.post_hub.iam_service.model.enums;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

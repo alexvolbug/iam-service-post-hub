@@ -23,7 +23,6 @@ public interface PostMapper {
 
     PostDTO toPostDTO(Post post);
 
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "user", source = "user")

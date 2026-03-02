@@ -1,6 +1,6 @@
 package com.post_hub.iam_service.model.request.post;
 
-import com.post_hub.iam_service.enums.PostSortField;
+import com.post_hub.iam_service.model.enums.PostSortField;
 import lombok.Data;
 
 import java.io.Serializable;

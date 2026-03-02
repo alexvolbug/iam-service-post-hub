@@ -1,7 +1,6 @@
 package com.post_hub.iam_service.model.entity;
 
-
-import com.post_hub.iam_service.enums.RegistrationStatus;
+import com.post_hub.iam_service.model.enums.RegistrationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -17,11 +16,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class User {
+    public static final String ID_FIELD = "id";
+    public static final String USERNAME_NAME_FIELD = "username";
+    public static final String EMAIL_NAME_FIELD = "email";
+    public static final String DELETED_FIELD = "deleted";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 
     @Size(max = 30)
     @Column(nullable = false, length = 30)
@@ -35,17 +37,17 @@ public class User {
     @Column(nullable = false, length = 50)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime created = LocalDateTime.now();
 
     @Column(nullable = false)
     private LocalDateTime updated = LocalDateTime.now();
 
-    @Column
-    private LocalDateTime lastLogin;
+    @Column()
+    private LocalDateTime last_login;
 
     @Column(nullable = false)
-    private Boolean deleted =  false;
+    private Boolean deleted = false;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "registration_status", nullable = false)
@@ -53,4 +55,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
+
 }

@@ -38,9 +38,9 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
 
-        PostDTO postDTO = postMapper.toPostDTO(post);
+        PostDTO postDto = postMapper.toPostDTO(post);
 
-        return IamResponse.createSuccessful(postDTO);
+        return IamResponse.createSuccessful(postDto);
     }
 
     @Override
@@ -53,10 +53,11 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(userId)));
 
         Post post = postMapper.createPost(request, user);
+        post.setUser(user);
         Post savedPost = postRepository.save(post);
-        PostDTO savedPostDTO = postMapper.toPostDTO(savedPost);
+        PostDTO postDto = postMapper.toPostDTO(savedPost);
 
-        return IamResponse.createSuccessful(savedPostDTO);
+        return IamResponse.createSuccessful(postDto);
     }
 
     @Override
@@ -68,8 +69,8 @@ public class PostServiceImpl implements PostService {
         post.setUpdated(LocalDateTime.now());
         post = postRepository.save(post);
 
-        PostDTO postDTO = postMapper.toPostDTO(post);
-        return IamResponse.createSuccessful(postDTO);
+        PostDTO postDto = postMapper.toPostDTO(post);
+        return IamResponse.createSuccessful(postDto);
 
     }
 
@@ -82,10 +83,13 @@ public class PostServiceImpl implements PostService {
         postRepository.save(post);
     }
 
+
+
     @Override
-    public IamResponse<PaginationResponse<PostSearchDTO>> findelAllPosts(Pageable pageable) {
+    public IamResponse<PaginationResponse<PostSearchDTO>> findAllPosts(Pageable pageable) {
         Page<PostSearchDTO> posts = postRepository.findAll(pageable)
                 .map(postMapper::toPostSearchDTO);
+
         PaginationResponse<PostSearchDTO> paginationResponse = new PaginationResponse<>(
                 posts.getContent(),
                 new PaginationResponse.Pagination(
@@ -102,19 +106,21 @@ public class PostServiceImpl implements PostService {
     @Override
     public IamResponse<PaginationResponse<PostSearchDTO>> searchPosts(PostSearchRequest request, Pageable pageable) {
         Specification<Post> specification = new PostSearchCriteria(request);
-        Page<PostSearchDTO> posts = postRepository.findAll(specification, pageable)
+
+        Page<PostSearchDTO> postsPage = postRepository.findAll(specification, pageable)
                 .map(postMapper::toPostSearchDTO);
 
         PaginationResponse<PostSearchDTO> response = PaginationResponse.<PostSearchDTO>builder()
-                .content(posts.getContent())
+                .content(postsPage.getContent())
                 .pagination(PaginationResponse.Pagination.builder()
-                        .total(posts.getTotalElements())
+                        .total(postsPage.getTotalElements())
                         .limit(pageable.getPageSize())
-                        .page(posts.getNumber() + 1)
-                        .pages(posts.getTotalPages())
+                        .page(postsPage.getNumber() + 1)
+                        .pages(postsPage.getTotalPages())
                         .build())
                 .build();
-        return IamResponse.createSuccessful(response);
 
+        return IamResponse.createSuccessful(response);
     }
+
 }

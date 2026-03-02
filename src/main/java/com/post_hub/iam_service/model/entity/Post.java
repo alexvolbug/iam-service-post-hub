@@ -17,10 +17,9 @@ public class Post {
     public static final String LIKES_NAME_FIELD = "likes";
     public static final String DELETED_FIELD = "deleted";
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Integer id;
+    private Integer id;
 
     @Column(nullable = false)
     private String title;
@@ -35,7 +34,7 @@ public class Post {
     private LocalDateTime updated = LocalDateTime.now();
 
     @Column(nullable = false, columnDefinition = "integer default 0")
-    private Integer likes =  0;
+    private Integer likes = 0;
 
     @Column(nullable = false)
     private Boolean deleted = false;
@@ -46,4 +45,5 @@ public class Post {
 
     @Column(name = "created_by")
     private String createdBy;
+
 }

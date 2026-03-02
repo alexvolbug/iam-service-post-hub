@@ -1,6 +1,5 @@
 package com.post_hub.iam_service.model.response;
 
-import ch.qos.logback.core.util.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +10,16 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class IamResponse<P extends Serializable> implements Serializable {
-  private String message;
-  private P payload;
-  private boolean success;
+    private String message;
+    private P payload;
+    private boolean success;
 
-  public static <P extends Serializable> IamResponse<P> createSuccessful(P payload) {
+    public static <P extends Serializable> IamResponse<P> createSuccessful(P payload) {
         return new IamResponse<>(StringUtils.EMPTY, payload, true);
     }
+
 }
+

@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Integer>, JpaSpecificationExecutor<Post> {
+
     boolean existsByTitle(String title);
 
-    Optional<Post> findByIdAndDeletedFalse(Integer id);
+    Optional<Post> findByIdAndDeletedFalse (Integer id);
+
 }
