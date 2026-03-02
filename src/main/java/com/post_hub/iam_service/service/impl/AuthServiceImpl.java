@@ -100,6 +100,7 @@ public class AuthServiceImpl implements AuthService {
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDto(newUser, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
 
+
         return IamResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
 
