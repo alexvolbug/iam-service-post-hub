@@ -25,10 +25,8 @@ public class JwtTokenProvider {
     private final SecretKey secretKey;
     private final Long jwtValidityInMilliseconds;
 
-    public JwtTokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration}") long jwtValidityInMilliseconds
-    ) {
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret,
+                            @Value("${jwt.expiration:3600000}") long jwtValidityInMilliseconds) {
         this.secretKey = getKey(secret);
         this.jwtValidityInMilliseconds = jwtValidityInMilliseconds;
     }
@@ -66,8 +64,9 @@ public class JwtTokenProvider {
         }
     }
 
-    public String getEmail(String token) {
-        return getAllClaimsFromToken(token).getSubject();
+    public String getUsername(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        return claims.get(AuthenticationConstants.USERNAME, String.class);
     }
 
     public List<String> getRoles(String token) {

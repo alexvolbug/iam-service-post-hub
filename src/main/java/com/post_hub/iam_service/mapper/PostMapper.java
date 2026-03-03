@@ -3,7 +3,6 @@ package com.post_hub.iam_service.mapper;
 import com.post_hub.iam_service.model.dto.post.PostDTO;
 import com.post_hub.iam_service.model.dto.post.PostSearchDTO;
 import com.post_hub.iam_service.model.entity.Post;
-import com.post_hub.iam_service.model.entity.User;
 import com.post_hub.iam_service.model.request.post.NewPostRequest;
 import com.post_hub.iam_service.model.request.post.UpdatePostRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
@@ -25,9 +24,7 @@ public interface PostMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
-    @Mapping(target = "user", source = "user")
-    @Mapping(target = "createdBy", source = "user.username")
-    Post createPost(NewPostRequest request, User user);
+    Post createPost(NewPostRequest request);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)

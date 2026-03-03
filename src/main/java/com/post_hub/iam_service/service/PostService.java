@@ -14,7 +14,7 @@ public interface PostService {
 
     IamResponse<PostDTO> getById(@NotNull Integer userId);
 
-    IamResponse<PostDTO> createPost(@NotNull Integer userId, NewPostRequest request);
+    IamResponse<PostDTO> createPost(@NotNull NewPostRequest request, String username);
 
     IamResponse<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest request);
 

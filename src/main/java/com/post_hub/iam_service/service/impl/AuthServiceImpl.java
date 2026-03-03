@@ -3,7 +3,6 @@ package com.post_hub.iam_service.service.impl;
 import com.post_hub.iam_service.mapper.UserMapper;
 import com.post_hub.iam_service.model.constants.ApiErrorMessage;
 import com.post_hub.iam_service.model.entity.Role;
-import com.post_hub.iam_service.model.exception.DataExistException;
 import com.post_hub.iam_service.model.exception.NotFoundException;
 import com.post_hub.iam_service.model.request.user.LoginRequest;
 import com.post_hub.iam_service.model.dto.user.UserProfileDTO;
@@ -15,6 +14,7 @@ import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.repository.RoleRepository;
 import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.security.JwtTokenProvider;
+import com.post_hub.iam_service.security.validation.AccessValidator;
 import com.post_hub.iam_service.service.AuthService;
 import com.post_hub.iam_service.service.RefreshTokenService;
 import com.post_hub.iam_service.service.model.IamServiceUserRole;
@@ -41,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AccessValidator accessValidator;
 
     @Override
     public IamResponse<UserProfileDTO> login(@NotNull LoginRequest request) {
@@ -77,13 +78,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public IamResponse<UserProfileDTO> registerUser(@NotNull RegistrationUserRequest request) {
-        userRepository.findByUsername(request.getUsername()).ifPresent(existingUser -> {
-            throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXISTS.getMessage(request.getUsername()));
-        });
-
-        userRepository.findByEmail(request.getEmail()).ifPresent(existingUser -> {
-            throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXISTS.getMessage(request.getEmail()));
-        });
+        accessValidator.validateNewUser(
+                request.getUsername(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getConfirmPassword()
+        );
 
         Role userRole = roleRepository.findByName(IamServiceUserRole.USER.getRole())
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_ROLE_NOT_FOUND.getMessage()));
@@ -99,7 +99,6 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtTokenProvider.generateToken(newUser);
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDto(newUser, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
-
 
         return IamResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
