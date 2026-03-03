@@ -4,6 +4,7 @@ import com.post_hub.iam_service.model.constants.ApiConstants;
 import jakarta.servlet.http.Cookie;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
@@ -25,7 +26,13 @@ public class ApiUtils {
         authorizationCookie.setMaxAge(300);
         return authorizationCookie;
     }
+
     public static String generateUuidWithoutDash() {
         return UUID.randomUUID().toString().replace(ApiConstants.DASH, StringUtils.EMPTY);
     }
+
+    public static String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
 }
