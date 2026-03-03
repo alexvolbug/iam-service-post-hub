@@ -49,10 +49,6 @@ public class SecurityConfig {
 
                         .requestMatchers(post("/users/create")).hasAnyAuthority(adminAccessSecurityRoles())
 
-                        // Users list endpoints: only ADMIN/SUPER_ADMIN
-                        .requestMatchers(get("/users/all")).hasAnyAuthority(adminAccessSecurityRoles())
-                        .requestMatchers(post("/users/search")).hasAnyAuthority(adminAccessSecurityRoles())
-
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions

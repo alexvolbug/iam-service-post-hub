@@ -40,8 +40,6 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
 
-        accessValidator.validateAdminOrOwnerAccess(post.getUser().getUsername(), post.getCreatedBy());
-
         PostDTO postDto = postMapper.toPostDTO(post);
 
         return IamResponse.createSuccessful(postDto);
@@ -55,7 +53,6 @@ public class PostServiceImpl implements PostService {
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USERNAME_NOT_FOUND.getMessage(username)));
-
 
         Post post = postMapper.createPost(postRequest);
         post.setUser(user);
@@ -71,7 +68,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
 
-        accessValidator.validateAdminOrOwnerAccess(post.getUser().getUsername(), post.getCreatedBy());
+        accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
 
         if (postRepository.existsByTitle(request.getTitle())) {
             throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXISTS.getMessage(request.getTitle()));
@@ -91,7 +88,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
 
-        accessValidator.validateAdminOrOwnerAccess(post.getUser().getUsername(), post.getCreatedBy());
+        accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
 
         post.setDeleted(true);
         postRepository.save(post);
