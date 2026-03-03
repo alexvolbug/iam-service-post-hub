@@ -43,6 +43,7 @@ public class PostServiceImpl implements PostService {
         accessValidator.validateAdminOrOwnerAccess(post.getUser().getUsername(), post.getCreatedBy());
 
         PostDTO postDto = postMapper.toPostDTO(post);
+
         return IamResponse.createSuccessful(postDto);
     }
 
@@ -54,6 +55,7 @@ public class PostServiceImpl implements PostService {
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USERNAME_NOT_FOUND.getMessage(username)));
+
 
         Post post = postMapper.createPost(postRequest);
         post.setUser(user);
