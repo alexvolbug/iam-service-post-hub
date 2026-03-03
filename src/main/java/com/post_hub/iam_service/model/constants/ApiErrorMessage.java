@@ -15,6 +15,7 @@ public enum ApiErrorMessage {
     EMAIL_ALREADY_EXISTS("Email: %s already exists"),
     EMAIL_NOT_FOUND("Email: %s was not found"),
     USER_ROLE_NOT_FOUND("Role was not found"),
+    COMMENT_NOT_FOUND_BY_ID("Comment with ID: %s was not found"),
 
     INVALID_TOKEN_SIGNATURE("Invalid token signature"),
     ERROR_DURING_JWT_PROCESSING("An unexpected error occurred during JWT processing"),
@@ -25,7 +26,6 @@ public enum ApiErrorMessage {
     INVALID_USER_OR_PASSWORD("Invalid email or password. Try again"),
     INVALID_USER_REGISTRATION_STATUS("Invalid user registration status: %s. "),
     NOT_FOUND_REFRESH_TOKEN("Refresh token not found."),
-
 
     MISMATCH_PASSWORDS("Password does not match"),
     INVALID_PASSWORD("Invalid password. It must have: "
