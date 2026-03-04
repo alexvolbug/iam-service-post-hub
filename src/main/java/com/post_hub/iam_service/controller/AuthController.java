@@ -7,6 +7,11 @@ import com.post_hub.iam_service.model.request.user.RegistrationUserRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.service.AuthService;
 import com.post_hub.iam_service.utils.ApiUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -24,7 +29,14 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful authorization",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = "{ \"token\": \"eyJhbGcIoIJIuz...\" }")))
+    })
     @PostMapping("${end.points.login}")
+    @Operation(summary = "User login", description = "Authenticates the user and returns an access/refresh token"
+    )
     public ResponseEntity<?> login(
             @RequestBody @Valid LoginRequest request,
             HttpServletResponse response) {
@@ -38,6 +50,8 @@ public class AuthController {
     }
 
     @GetMapping("${end.points.refresh.token}")
+    @Operation(summary = "Refresh access token", description = "Generates new access token using provided refresh token"
+    )
     public ResponseEntity<IamResponse<UserProfileDTO>> refreshToken(
             @RequestParam(name = "token") String refreshToken,
             HttpServletResponse response) {
@@ -51,6 +65,8 @@ public class AuthController {
     }
 
     @PostMapping("${end.points.register}")
+    @Operation(summary = "Register a new user", description = "Creates new user and returns authentication details"
+    )
     public ResponseEntity<?> register(
             @RequestBody @Valid RegistrationUserRequest request,
             HttpServletResponse response) {

@@ -1,10 +1,8 @@
 package com.post_hub.iam_service.advice;
 
 import com.post_hub.iam_service.model.constants.ApiConstants;
-import com.post_hub.iam_service.model.exception.DataExistException;
-import com.post_hub.iam_service.model.exception.InvalidDataException;
-import com.post_hub.iam_service.model.exception.InvalidPasswordException;
-import com.post_hub.iam_service.model.exception.NotFoundException;
+import com.post_hub.iam_service.model.constants.ApiErrorMessage;
+import com.post_hub.iam_service.model.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,6 +89,15 @@ public class CommonControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InternalException.class)
+    @ResponseBody
+    protected ResponseEntity<String> handleUndefinedException(InternalException ex) {
+        logStackTrace(ex);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiErrorMessage.UNEXPECTED_ERROR_OCCURRED.getMessage());
     }
 
     private void logStackTrace(Exception ex) {

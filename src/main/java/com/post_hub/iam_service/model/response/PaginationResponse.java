@@ -1,6 +1,5 @@
 package com.post_hub.iam_service.model.response;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +25,5 @@ public class PaginationResponse<T> implements Serializable {
         private int limit;
         private int page;
         private int pages;
-
     }
 }

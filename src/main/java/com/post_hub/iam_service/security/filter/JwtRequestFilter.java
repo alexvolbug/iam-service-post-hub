@@ -36,15 +36,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-
-        return uri.startsWith("/v3/api-docs")
-                || uri.startsWith("/swagger-ui")
-                || uri.equals("/swagger-ui.html")
-                || uri.startsWith("/webjars");
-    }
-    @Override
     protected void doFilterInternal(
             @NotNull HttpServletRequest request,
             @NotNull HttpServletResponse response,
