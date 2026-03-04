@@ -5,7 +5,7 @@ import com.post_hub.iam_service.model.request.user.LoginRequest;
 import com.post_hub.iam_service.model.dto.user.UserProfileDTO;
 import com.post_hub.iam_service.model.request.user.RegistrationUserRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
-import com.post_hub.iam_service.service.AuthService;
+import com.post_hub.iam_service.AuthService;
 import com.post_hub.iam_service.utils.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

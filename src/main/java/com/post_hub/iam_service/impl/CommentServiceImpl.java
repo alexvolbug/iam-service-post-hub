@@ -1,4 +1,4 @@
-package com.post_hub.iam_service.service.impl;
+package com.post_hub.iam_service.impl;
 
 import com.post_hub.iam_service.mapper.CommentMapper;
 import com.post_hub.iam_service.mapper.PostMapper;
@@ -19,7 +19,7 @@ import com.post_hub.iam_service.repository.PostRepository;
 import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.repository.criteria.CommentSearchCriteria;
 import com.post_hub.iam_service.security.validation.AccessValidator;
-import com.post_hub.iam_service.service.CommentService;
+import com.post_hub.iam_service.CommentService;
 import com.post_hub.iam_service.utils.ApiUtils;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;

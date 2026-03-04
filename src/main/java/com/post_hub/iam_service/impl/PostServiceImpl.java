@@ -1,4 +1,4 @@
-package com.post_hub.iam_service.service.impl;
+package com.post_hub.iam_service.impl;
 
 import com.post_hub.iam_service.mapper.PostMapper;
 import com.post_hub.iam_service.model.constants.ApiErrorMessage;
@@ -17,7 +17,7 @@ import com.post_hub.iam_service.repository.PostRepository;
 import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.repository.criteria.PostSearchCriteria;
 import com.post_hub.iam_service.security.validation.AccessValidator;
-import com.post_hub.iam_service.service.PostService;
+import com.post_hub.iam_service.PostService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

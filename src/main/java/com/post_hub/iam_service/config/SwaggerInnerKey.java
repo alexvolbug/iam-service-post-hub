@@ -1,6 +1,6 @@
 package com.post_hub.iam_service.config;
 
-import com.post_hub.iam_service.service.model.AuthenticationConstants;
+import com.post_hub.iam_service.model.AuthenticationConstants;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;

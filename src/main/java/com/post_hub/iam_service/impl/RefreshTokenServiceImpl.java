@@ -1,11 +1,11 @@
-package com.post_hub.iam_service.service.impl;
+package com.post_hub.iam_service.impl;
 
 import com.post_hub.iam_service.model.constants.ApiErrorMessage;
 import com.post_hub.iam_service.model.entity.RefreshToken;
 import com.post_hub.iam_service.model.entity.User;
 import com.post_hub.iam_service.model.exception.NotFoundException;
 import com.post_hub.iam_service.repository.RefreshTokenRepository;
-import com.post_hub.iam_service.service.RefreshTokenService;
+import com.post_hub.iam_service.RefreshTokenService;
 import com.post_hub.iam_service.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

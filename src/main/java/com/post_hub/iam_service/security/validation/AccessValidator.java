@@ -7,7 +7,7 @@ import com.post_hub.iam_service.model.exception.InvalidDataException;
 import com.post_hub.iam_service.model.exception.InvalidPasswordException;
 import com.post_hub.iam_service.model.exception.NotFoundException;
 import com.post_hub.iam_service.repository.UserRepository;
-import com.post_hub.iam_service.service.model.IamServiceUserRole;
+import com.post_hub.iam_service.model.IamServiceUserRole;
 import com.post_hub.iam_service.utils.ApiUtils;
 import com.post_hub.iam_service.utils.PasswordUtils;
 import lombok.RequiredArgsConstructor;

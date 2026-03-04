@@ -8,7 +8,7 @@ import com.post_hub.iam_service.model.request.post.PostSearchRequest;
 import com.post_hub.iam_service.model.request.post.UpdatePostRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.model.response.PaginationResponse;
-import com.post_hub.iam_service.service.PostService;
+import com.post_hub.iam_service.PostService;
 import com.post_hub.iam_service.utils.ApiUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

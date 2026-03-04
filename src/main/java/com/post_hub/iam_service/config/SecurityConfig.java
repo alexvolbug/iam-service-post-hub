@@ -2,8 +2,8 @@ package com.post_hub.iam_service.config;
 
 import com.post_hub.iam_service.security.filter.JwtRequestFilter;
 import com.post_hub.iam_service.security.handler.AccessRestrictionHandler;
-import com.post_hub.iam_service.service.UserService;
-import com.post_hub.iam_service.service.model.IamServiceUserRole;
+import com.post_hub.iam_service.UserService;
+import com.post_hub.iam_service.model.IamServiceUserRole;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.customizers.OpenApiCustomizer;

@@ -1,4 +1,4 @@
-package com.post_hub.iam_service.service;
+package com.post_hub.iam_service;
 
 import com.post_hub.iam_service.model.dto.comment.CommentDTO;
 import com.post_hub.iam_service.model.dto.comment.CommentSearchDTO;

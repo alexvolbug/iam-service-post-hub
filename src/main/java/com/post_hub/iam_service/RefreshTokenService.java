@@ -1,4 +1,4 @@
-package com.post_hub.iam_service.service;
+package com.post_hub.iam_service;
 
 import com.post_hub.iam_service.model.entity.RefreshToken;
 import com.post_hub.iam_service.model.entity.User;

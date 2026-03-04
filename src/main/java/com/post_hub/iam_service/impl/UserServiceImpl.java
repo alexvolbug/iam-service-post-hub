@@ -1,4 +1,4 @@
-package com.post_hub.iam_service.service.impl;
+package com.post_hub.iam_service.impl;
 
 import com.post_hub.iam_service.mapper.UserMapper;
 import com.post_hub.iam_service.model.constants.ApiErrorMessage;
@@ -17,8 +17,8 @@ import com.post_hub.iam_service.repository.RoleRepository;
 import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.repository.criteria.UserSearchCriteria;
 import com.post_hub.iam_service.security.validation.AccessValidator;
-import com.post_hub.iam_service.service.UserService;
-import com.post_hub.iam_service.service.model.IamServiceUserRole;
+import com.post_hub.iam_service.UserService;
+import com.post_hub.iam_service.model.IamServiceUserRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

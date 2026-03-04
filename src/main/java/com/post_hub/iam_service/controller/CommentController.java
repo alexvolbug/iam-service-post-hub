@@ -8,7 +8,7 @@ import com.post_hub.iam_service.model.request.comment.CommentSearchRequest;
 import com.post_hub.iam_service.model.request.comment.UpdateCommentRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.model.response.PaginationResponse;
-import com.post_hub.iam_service.service.CommentService;
+import com.post_hub.iam_service.CommentService;
 import com.post_hub.iam_service.utils.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

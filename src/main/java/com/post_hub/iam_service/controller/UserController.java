@@ -8,7 +8,7 @@ import com.post_hub.iam_service.model.request.user.UpdateUserRequest;
 import com.post_hub.iam_service.model.request.user.UserSearchRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.model.response.PaginationResponse;
-import com.post_hub.iam_service.service.UserService;
+import com.post_hub.iam_service.UserService;
 import com.post_hub.iam_service.utils.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

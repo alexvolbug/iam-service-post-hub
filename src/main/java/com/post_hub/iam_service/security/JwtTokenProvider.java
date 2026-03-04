@@ -2,7 +2,7 @@ package com.post_hub.iam_service.security;
 
 import com.post_hub.iam_service.model.entity.Role;
 import com.post_hub.iam_service.model.entity.User;
-import com.post_hub.iam_service.service.model.AuthenticationConstants;
+import com.post_hub.iam_service.model.AuthenticationConstants;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

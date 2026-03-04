@@ -1,4 +1,4 @@
-package com.post_hub.iam_service.service.impl;
+package com.post_hub.iam_service.impl;
 
 import com.post_hub.iam_service.mapper.UserMapper;
 import com.post_hub.iam_service.model.constants.ApiErrorMessage;
@@ -15,9 +15,9 @@ import com.post_hub.iam_service.repository.RoleRepository;
 import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.security.JwtTokenProvider;
 import com.post_hub.iam_service.security.validation.AccessValidator;
-import com.post_hub.iam_service.service.AuthService;
-import com.post_hub.iam_service.service.RefreshTokenService;
-import com.post_hub.iam_service.service.model.IamServiceUserRole;
+import com.post_hub.iam_service.AuthService;
+import com.post_hub.iam_service.RefreshTokenService;
+import com.post_hub.iam_service.model.IamServiceUserRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
