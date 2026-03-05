@@ -18,14 +18,15 @@ import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.repository.criteria.PostSearchCriteria;
 import com.post_hub.iam_service.security.validation.AccessValidator;
 import com.post_hub.iam_service.service.PostService;
+import com.post_hub.iam_service.utils.ApiUtils;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,56 +35,55 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final PostMapper postMapper;
     private final AccessValidator accessValidator;
+    private final ApiUtils apiUtils;
 
     @Override
+    @Transactional(readOnly = true)
     public IamResponse<PostDTO> getById(@NotNull Integer postId) {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
 
-        PostDTO postDto = postMapper.toPostDTO(post);
-
-        return IamResponse.createSuccessful(postDto);
+        return IamResponse.createSuccessful(postMapper.toPostDTO(post));
     }
 
     @Override
-    public IamResponse<PostDTO> createPost(@NotNull NewPostRequest postRequest, String username) {
+    @Transactional
+    public IamResponse<PostDTO> createPost(@NotNull NewPostRequest postRequest) {
         if (postRepository.existsByTitle(postRequest.getTitle())) {
             throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXISTS.getMessage(postRequest.getTitle()));
         }
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USERNAME_NOT_FOUND.getMessage(username)));
+        Integer userId = apiUtils.getUserIdFromAuthentication();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException(ApiErrorMessage.USERNAME_NOT_FOUND.getMessage(userId)));
 
-        Post post = postMapper.createPost(postRequest);
-        post.setUser(user);
-        post.setCreatedBy(username);
+        Post post = postMapper.createPost(postRequest, user, user.getUsername());
         post = postRepository.save(post);
 
-        PostDTO postDto = postMapper.toPostDTO(post);
-        return IamResponse.createSuccessful(postDto);
+        return IamResponse.createSuccessful(postMapper.toPostDTO(post));
     }
 
     @Override
+    @Transactional
     public IamResponse<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest request) {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
 
         accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
 
-        if (postRepository.existsByTitle(request.getTitle())) {
+        if (!post.getTitle().equals(request.getTitle()) && postRepository.existsByTitle(request.getTitle())) {
             throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXISTS.getMessage(request.getTitle()));
         }
 
         postMapper.updatePost(post, request);
-        post.setUpdated(LocalDateTime.now());
         post = postRepository.save(post);
 
-        PostDTO postDto = postMapper.toPostDTO(post);
-        return IamResponse.createSuccessful(postDto);
+        return IamResponse.createSuccessful(postMapper.toPostDTO(post));
 
     }
 
     @Override
+    @Transactional
     public void softDeletePost(Integer postId) {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
@@ -95,6 +95,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public IamResponse<PaginationResponse<PostSearchDTO>> findAllPosts(Pageable pageable) {
         Page<PostSearchDTO> posts = postRepository.findAll(pageable)
                 .map(postMapper::toPostSearchDTO);
@@ -113,6 +114,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public IamResponse<PaginationResponse<PostSearchDTO>> searchPosts(PostSearchRequest request, Pageable pageable) {
         Specification<Post> specification = new PostSearchCriteria(request);
 

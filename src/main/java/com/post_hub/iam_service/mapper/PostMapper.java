@@ -3,6 +3,7 @@ package com.post_hub.iam_service.mapper;
 import com.post_hub.iam_service.model.dto.post.PostDTO;
 import com.post_hub.iam_service.model.dto.post.PostSearchDTO;
 import com.post_hub.iam_service.model.entity.Post;
+import com.post_hub.iam_service.model.entity.User;
 import com.post_hub.iam_service.model.request.post.NewPostRequest;
 import com.post_hub.iam_service.model.request.post.UpdatePostRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
@@ -24,10 +25,15 @@ public interface PostMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
-    Post createPost(NewPostRequest request);
+    @Mapping(target = "updated", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(source = "user", target = "user")
+    @Mapping(source = "createdBy", target = "createdBy")
+    Post createPost(NewPostRequest newPostRequest, User user, String createdBy);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
+    @Mapping(target = "updated", expression = "java(java.time.LocalDateTime.now())")
     void updatePost(@MappingTarget Post post, UpdatePostRequest request);
 
     @Mapping(source = "deleted", target = "isDeleted")
