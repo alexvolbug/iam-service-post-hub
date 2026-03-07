@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public IamResponse<UserDTO> createUser(@NotNull NewUserRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXISTS.getMessage(request.getEmail()));
@@ -79,7 +80,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public IamResponse<UserDTO> updateUser(@NotNull Integer userId, @NotNull UpdateUserRequest request) {
+    @Transactional
+    public IamResponse<UserDTO> updateUser(@NotNull Integer userId, UpdateUserRequest request) {
         User user = userRepository.findByIdAndDeletedFalse(userId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(userId)));
 
@@ -100,6 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void softDeleteUser(Integer userId) {
         User user = userRepository.findByIdAndDeletedFalse(userId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(userId)));
@@ -111,6 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public IamResponse<PaginationResponse<UserSearchDTO>> findAllUsers(Pageable pageable) {
         Page<UserSearchDTO> users = userRepository.findAll(pageable)
                 .map(userMapper::toUserSearchDto);
@@ -129,6 +133,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public IamResponse<PaginationResponse<UserSearchDTO>> searchUsers(UserSearchRequest request, Pageable pageable) {
         Specification<User> specification = new UserSearchCriteria(request);
 
