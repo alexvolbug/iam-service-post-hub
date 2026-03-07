@@ -1,13 +1,14 @@
-package com.post_hub.iam_service.integration.post_controller;
+package com.post_hub.iam_service.integration.comment_controller;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.post_hub.iam_service.IamServiceApplication;
-import com.post_hub.iam_service.model.dto.post.PostDTO;
+import com.post_hub.iam_service.model.dto.comment.CommentDTO;
 import com.post_hub.iam_service.model.entity.User;
 import com.post_hub.iam_service.model.exception.InvalidDataException;
-import com.post_hub.iam_service.model.request.post.NewPostRequest;
+import com.post_hub.iam_service.model.request.comment.CommentRequest;
+import com.post_hub.iam_service.model.request.comment.UpdateCommentRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import com.post_hub.iam_service.repository.UserRepository;
 import com.post_hub.iam_service.security.JwtTokenProvider;
@@ -40,9 +41,10 @@ import java.util.Objects;
 @SpringBootTest(classes = {IamServiceApplication.class})
 @AutoConfigureMockMvc
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
-public class PostControllerTest {
+public class CommentControllerTest {
 
-    @Autowired @Setter
+    @Autowired
+    @Setter
     private MockMvc mockMvc;
 
     @Autowired @Setter
@@ -65,9 +67,9 @@ public class PostControllerTest {
     }
 
     @Test
-    void getPosts_OK_200() throws Exception {
+    void getComments_OK_200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/posts/all")
+                        .get("/comments/all")
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -75,11 +77,11 @@ public class PostControllerTest {
 
     @Test
     @Transactional
-    void createPost_OK_200() throws Exception {
-        NewPostRequest request = new NewPostRequest("Simple Title", "Simple content", 50);
+    void createComment_OK_200() throws Exception {
+        CommentRequest request = new CommentRequest(2, "This is a test comment");
 
         MvcResult requestResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/posts/create")
+                        .post("/comments/create")
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
@@ -87,23 +89,22 @@ public class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
-        IamResponse<PostDTO> response = parsePostDTOResponse(requestResult.getResponse().getContentAsByteArray());
+        IamResponse<CommentDTO> response = parsePostDTOResponse(requestResult.getResponse().getContentAsByteArray());
 
-        PostDTO resultBody = Objects.nonNull(response.getPayload()) ? response.getPayload() : null;
+        CommentDTO resultBody = Objects.nonNull(response.getPayload()) ? response.getPayload() : null;
         Assertions.assertTrue(response.isSuccess());
         Assertions.assertNotNull(resultBody);
-        Assertions.assertEquals(request.getTitle(), resultBody.getTitle());
-        Assertions.assertEquals(request.getContent(), resultBody.getContent());
-        Assertions.assertEquals(request.getLikes() , resultBody.getLikes());
+        Assertions.assertEquals(request.getMessage(), resultBody.getMessage());
+        Assertions.assertEquals(request.getPostId(), resultBody.getPostId());
     }
 
     @Test
     @Transactional
-    void updatePost_OK_200() throws Exception {
-        NewPostRequest request = new NewPostRequest("Updated Title", "Updated content", 50);
+    void updateComment_OK_200() throws Exception {
+        UpdateCommentRequest request = new UpdateCommentRequest(2, "This is a updated test comment");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/posts/1")
+                        .put("/comments/1")
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
@@ -113,19 +114,19 @@ public class PostControllerTest {
 
     @Test
     @Transactional
-    void deletePost_OK_200() throws Exception {
+    void deleteComment_OK_200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/posts/1")
+                        .delete("/comments/1")
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    private IamResponse<PostDTO> parsePostDTOResponse(byte[] contentAsByteArray) {
+    private IamResponse<CommentDTO> parsePostDTOResponse(byte[] contentAsByteArray) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(IamResponse.class, PostDTO.class);
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(IamResponse.class, CommentDTO.class);
             return objectMapper.readValue(contentAsByteArray, javaType);
         } catch (IOException e) {
             throw new RuntimeException(e);
