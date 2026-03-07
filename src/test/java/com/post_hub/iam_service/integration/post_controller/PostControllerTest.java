@@ -40,7 +40,7 @@ import java.util.Objects;
 @SpringBootTest(classes = {IamServiceApplication.class})
 @AutoConfigureMockMvc
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
-public class PostControllerTest {
+class PostControllerTest {
 
     @Autowired @Setter
     private MockMvc mockMvc;

@@ -41,7 +41,7 @@ import java.util.Objects;
 @SpringBootTest(classes = {IamServiceApplication.class})
 @AutoConfigureMockMvc
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
-public class CommentControllerTest {
+class CommentControllerTest {
 
     @Autowired
     @Setter

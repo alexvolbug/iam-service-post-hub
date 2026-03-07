@@ -1,7 +1,6 @@
 package com.post_hub.iam_service.model.dto.post;
 
 import lombok.AllArgsConstructor;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +20,3 @@ public class PostDTO implements Serializable {
     private String createdBy;
 
 }
-
