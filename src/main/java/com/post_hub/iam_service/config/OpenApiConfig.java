@@ -32,7 +32,7 @@ import java.util.Objects;
                         - Create posts
                         - Write comments to posts
 
-                        Created by Mykola Shchypailo | [Send me email](mailto:mykola.shchypailo@gmail.com)""",
+                        Created by Aleksey Volchenko | [Send me email](mailto:alexvolbug@gmail.com)""",
                 contact = @Contact(name = "POST_HUB")
         ),
         security = { @SecurityRequirement(name = HttpHeaders.AUTHORIZATION) }
