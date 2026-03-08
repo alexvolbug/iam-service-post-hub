@@ -1,5 +1,6 @@
 package com.post_hub.iam_service.service.impl;
 
+import com.post_hub.iam_service.kafka.service.KafkaMessageService;
 import com.post_hub.iam_service.mapper.CommentMapper;
 import com.post_hub.iam_service.mapper.PostMapper;
 import com.post_hub.iam_service.model.constants.ApiErrorMessage;
@@ -41,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final AccessValidator accessValidator;
+    private final KafkaMessageService kafkaMessageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -65,6 +67,8 @@ public class CommentServiceImpl implements CommentService {
         comment = commentRepository.save(comment);
         postRepository.save(post);
 
+        kafkaMessageService.sendCommentCreatedMessage(user.getId(), comment.getId());
+
         return IamResponse.createSuccessful(commentMapper.toDto(comment));
     }
 
@@ -85,6 +89,8 @@ public class CommentServiceImpl implements CommentService {
         commentMapper.updateComment(comment, request);
         comment = commentRepository.save(comment);
 
+        kafkaMessageService.sendCommentUpdatedMessage(comment.getUser().getId(), comment.getId(), comment.getMessage());
+
         return IamResponse.createSuccessful(commentMapper.toDto(comment));
     }
 
@@ -101,6 +107,8 @@ public class CommentServiceImpl implements CommentService {
 
         Post post = comment.getPost();
         postRepository.save(post);
+
+        kafkaMessageService.sendCommentDeletedMessage(comment.getUser().getId(), comment.getId());
 
         IamResponse.createSuccessful(postMapper.toPostDTO(post));
     }

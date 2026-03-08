@@ -1,5 +1,6 @@
 package com.post_hub.iam_service.service.impl;
 
+import com.post_hub.iam_service.kafka.service.KafkaMessageService;
 import com.post_hub.iam_service.mapper.UserMapper;
 import com.post_hub.iam_service.model.constants.ApiErrorMessage;
 import com.post_hub.iam_service.model.dto.user.UserDTO;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final AccessValidator accessValidator;
+    private final KafkaMessageService kafkaMessageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -76,6 +78,8 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
+        kafkaMessageService.sendUserCreatedMessage(user.getId(), user.getUsername());
+
         return IamResponse.createSuccessful(userMapper.toDto(savedUser));
     }
 
@@ -98,6 +102,8 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(user, request);
         user = userRepository.save(user);
 
+        kafkaMessageService.sendUserUpdatedMessage(user.getId(), user.getUsername());
+
         return IamResponse.createSuccessful(userMapper.toDto(user));
     }
 
@@ -111,6 +117,8 @@ public class UserServiceImpl implements UserService {
 
         user.setDeleted(true);
         userRepository.save(user);
+
+        kafkaMessageService.sendUserDeletedMessage(userId, user.getUsername());
     }
 
     @Override
