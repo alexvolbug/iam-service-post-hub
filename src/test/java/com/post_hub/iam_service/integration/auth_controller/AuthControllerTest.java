@@ -6,10 +6,7 @@ import com.post_hub.iam_service.model.request.user.LoginRequest;
 import com.post_hub.iam_service.model.request.user.RegistrationUserRequest;
 import com.post_hub.iam_service.model.response.IamResponse;
 import lombok.Setter;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,7 @@ import java.io.IOException;
 @SpringBootTest(classes = {IamServiceApplication.class})
 @AutoConfigureMockMvc
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
+@Tag("integration")
 class AuthControllerTest {
 
     @Autowired @Setter
@@ -42,7 +40,7 @@ class AuthControllerTest {
     @Test
     @Order(1)
     void loginUserAsSuperAdmin_OK_200() throws Exception {
-        LoginRequest request = new LoginRequest("superadmin@gmail.com", "Test11111!");
+        LoginRequest request = new LoginRequest("superadmin@gmail.com", "Test11111");
 
         MvcResult requestResult = mvc.perform(MockMvcRequestBuilders
                         .post("/auth/login")
