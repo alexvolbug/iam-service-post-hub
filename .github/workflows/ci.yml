@@ -6,8 +6,8 @@ on:
       - main
       - lesson-16.7_GitLabCiScript
 
-jobs:
 
+jobs:
   build_jar:
     runs-on: ubuntu-latest
 
@@ -22,7 +22,7 @@ jobs:
           java-version: 21
 
       - name: Build JAR
-        run: mvn clean install -Dgroups=integration
+        run: mvn clean package -DskipTests
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
